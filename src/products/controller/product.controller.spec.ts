@@ -1,4 +1,5 @@
-/** import { Test, TestingModule } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
+import { ProductService } from '@products/service/product.service';
 import { ProductController } from './product.controller';
 
 describe.only('ProductController', () => {
@@ -7,6 +8,19 @@ describe.only('ProductController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ProductController],
+      providers: [
+        {
+          provide: ProductService,
+          useValue: {
+            findAll: jest.fn(() => ({})),
+            findAllCat: jest.fn(() => ({})),
+            findOne: jest.fn(() => ({})),
+            create: jest.fn(() => ({})),
+            update: jest.fn(() => ({})),
+            remove: jest.fn(() => ({})),
+          }
+        }
+      ]
     }).compile();
 
     controller = module.get<ProductController>(ProductController);
@@ -16,4 +30,3 @@ describe.only('ProductController', () => {
     expect(controller).toBeDefined();
   });
 });
-*/

@@ -3,16 +3,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './users/user.module';
-import { ProductController } from './products/controller/product.controller';
-import { ProductService } from './products/service/product.service';
 import { ProductModule } from './products/products.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     MongooseModule.forRootAsync({
     useFactory: () => ({
-      uri: 'mongodb://127.0.0.1:27017/totalEnergy',
+      uri: process.env.DB_MONGO_URI || 'mongodb://127.0.0.1:27017/totalEnergy',
       useNewUrlParser: true,
       useUnifiedTopology: true
     }),

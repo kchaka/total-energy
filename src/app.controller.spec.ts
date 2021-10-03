@@ -1,20 +1,30 @@
+import { AuthService } from '@auth/service/auth.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthService } from './auth/service/auth.service';
-import { UsersService } from './users/service/user/users.service';
+import { userLoginMock } from './shared/mock/user-login.mock';
 
 describe('AppController', () => {
   let appController: AppController;
-  jest.mock('./auth/service/auth.service');
+  let service: AuthService;
+
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
+      providers: [
+        AppService,
+        {
+          provide: AuthService,
+          useValue: {
+            login: jest.fn(() => ({})),
+          }
+        }
+      ],
     }).compile();
 
     appController = app.get<AppController>(AppController);
+    service = app.get<AuthService>(AuthService);
   });
 
   describe('Instantiation', () => {
@@ -24,11 +34,9 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return Access_token', () => {
-      expect(appController.login({name: 'kawt', password: '1234', email: 'kawt@foo.bar'}))
-      .toBe({
-        'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoia2Frb2EiLCJwYXNzd29yZCI6Imtha29hQGZvby5jb20iLCJlbWFpbCI6IibDqSgiLCJpYXQiOjE2MzMyNTQwMDYsImV4cCI6MTYzMzI1NDA2Nn0.o-ld4IB4zrjnBON3xTIeOeFk2XYy0DIcuWpobMfneZA'
-      });
+    it('should return Access_token', async () => {
+      const res = await service.login(userLoginMock);
+      expect(res).toEqual({});
     });
   });
 });

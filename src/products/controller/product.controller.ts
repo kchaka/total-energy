@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { JwtAuthGuard } from '@auth/guard/jwt-auth.guard';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ProductPayloadDto } from '../dto/create-product.dto';
 import { ProductDto } from '../dto/product.dto';
@@ -49,6 +50,7 @@ export class ProductController {
    * @param createProductPayload - Product Payload
    * @returns - Product Info
    */
+  @UseGuards(new JwtAuthGuard('local'))
   @ApiResponse({ type: ProductDto, description: 'Product info', status: 200 })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @Post()
@@ -63,6 +65,7 @@ export class ProductController {
    * @param productPayload - Product Payload
    * @returns - Product Info
    */
+  @UseGuards(new JwtAuthGuard('local'))
   @ApiResponse({ type: ProductDto, description: 'Update Product', status: 200 })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   @ApiNotFoundResponse({ description: 'PRODUCT_NOT_FOUND' })
@@ -78,6 +81,7 @@ export class ProductController {
    * @param productId - The Product Id
    * @returns - Deleted Product
    */
+  @UseGuards(new JwtAuthGuard('local'))
   @ApiResponse({ type: ProductDto, description: 'Delete the product', status: 200 })
   @ApiInternalServerErrorResponse({ description: 'internal server error' })
   @ApiNotFoundResponse({ description: 'PRODUCT_NOT_FOUND' })
