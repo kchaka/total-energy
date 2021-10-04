@@ -10,8 +10,8 @@ export class UserDto {
    */
    @IsNotEmpty()
    @IsString()
-   @ApiProperty({ description: 'Number of the user', required: true })
-   public id: string;
+   @ApiProperty({ description: 'Id of the user', required: true })
+   public id?: string;
 
   /**
    * Name of the user.

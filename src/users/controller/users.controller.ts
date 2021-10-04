@@ -1,5 +1,6 @@
-import { Controller, Get, Param } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { ApiInternalServerErrorResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateUserDto } from '@usersdto/user-body.dto';
 import { UserDto } from '../dto/user.dto';
 import { UsersService } from '../service/users.service';
 
@@ -20,4 +21,17 @@ export class UserController {
   findOne(@Param('name') userName: string) {
     return this.usersService.findOne(userName);
   }
+
+  /**
+   * Create new User
+   *
+   * @param userPayload - User Payload
+   * @returns - User Info
+   */
+   @ApiResponse({ type: UserDto, description: 'User info', status: 200 })
+   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
+   @Post()
+   create(@Body() userPayload: CreateUserDto) {
+     return this.usersService.create(userPayload);
+   }
 }

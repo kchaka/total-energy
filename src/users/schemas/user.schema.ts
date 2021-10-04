@@ -11,9 +11,6 @@ export class User extends Document {
 
   @Prop()
   email: string;
-
-  @Prop()
-  _id: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
